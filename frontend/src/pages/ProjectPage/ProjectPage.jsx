@@ -25,11 +25,10 @@ export const ProjectPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('use Effect')
     const fetchProject = async () => {
-      setIsLoading(true);
-
       try {
-        const projectData = await request(PROJECT_ENDPOINT);
+        const projectData = await request(`/api/projects/${id}`);
 
         console.log(projectData);
 
@@ -50,19 +49,38 @@ export const ProjectPage = () => {
       }
     };
 
-    fetchProject();
-  }, [id, error, PROJECT_ENDPOINT]);
+    if (id) {
+      fetchProject();
+    } else {
+      const newProjectInitialName = 'New Project';
+      setProjectTitle(newProjectInitialName);
+      setEditedTitle(newProjectInitialName);
+      setTitleIsBeingEdited(true);
+      setIsLoading(false);
+    }
+  }, [id]);
 
   const onTitleSave = async () => {
     try {
-      const updatedProject = await request(PROJECT_ENDPOINT, 'PATCH', {name: editedTitle});
+      let updatedProject = null;
+
+      if (id) {
+        updatedProject = await request(PROJECT_ENDPOINT, 'PATCH', {name: editedTitle});
+      } else {
+        updatedProject = await request('/api/projects', 'POST', {name: editedTitle});
+      }
 
       if (updatedProject.error) {
         console.log(updatedProject.error);
         setEditingError(updatedProject.error || 'Failed to&nbsp;update project');
-      } else {
+      } else if (id) {
         setProjectTitle(updatedProject.data.name);
         setEditingError('');
+      } else {
+        setIsLoading(true);
+        setTimeout(() => {
+          navigate(`/projects/${updatedProject.data.id}`, {replace: true});
+        }, 1000);
       }
     } catch(error) {
       console.log(error);
@@ -109,7 +127,7 @@ export const ProjectPage = () => {
     return (
       <main className={`page ${styles['project-page']}`}>
         <div className="container page__container">
-          <div className="container">Loading projects...</div>
+          <div className="container">Loading project...</div>
         </div>
       </main>
     )
@@ -123,6 +141,30 @@ export const ProjectPage = () => {
         </div>
       </main>
     )
+  }
+
+  // if we are on Create-Project page
+  if (!id) {
+    return (
+      <div className={`page ${styles['project-page']}`}>
+        <div className="container page__container">
+          <div className={styles['title-wrapper']}>
+            <input
+              type="text"
+              className={`h1 ${styles['title-input']}`}
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+            />
+            <div className="list__item-buttons">
+              <IconButton id="check" size="md" title="Save" onClick={onTitleSave} />
+            </div>
+          </div>
+          {
+            editingError && <div className="list__item-error">{editingError}</div>
+          }
+        </div>
+      </div>
+    );
   }
 
   return (

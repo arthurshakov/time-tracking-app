@@ -13,16 +13,9 @@ export const App = () => {
         <Route path="/login/" element={<LoginPage />} />
         <Route path="/register/" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/projects/" element={
-          // <ProtectedRoute>
-            <ProjectsPage />
-          // </ProtectedRoute>
-        } />
-        <Route path="/projects/:id" element={
-          // <ProtectedRoute>
-            <ProjectPage />
-          // </ProtectedRoute>
-        } />
+        <Route path="/projects/" element={<ProjectsPage />} />
+        <Route path="/projects/create" element={<ProjectPage />} />
+        <Route path="/projects/:id" element={<ProjectPage />} />
         <Route path="*" element={<div>Ошибка 404</div>} />
       </Routes>
     </div>

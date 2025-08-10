@@ -80,11 +80,12 @@ export const TimerBlock = () => {
   }
 
   const onSave = async () => {
+    pause();
+    setIsPlaying(false);
+
     if (totalSeconds === 0) {
       return;
     }
-
-    pause();
 
     if (!isAuthenticated) {
       alert('Log in to save your time entry');
