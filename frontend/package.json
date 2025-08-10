@@ -1,0 +1,49 @@
+{
+  "name": "vite-initial",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "proxy": "http://localhost:3000",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "format": "prettier --write ./src",
+    "serve": "json-server --watch ./src/db.json --port 3000"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.60.0",
+    "react-redux": "^9.2.0",
+    "react-router": "^7.7.0",
+    "react-router-dom": "^7.7.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.10.2",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "styled-components": "^6.1.19",
+    "uuid": "^11.1.0",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "babel-plugin-check-prop-types": "^1.1.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "prop-types": "^15.8.1",
+    "sass": "^1.89.2",
+    "vite": "^7.0.5",
+    "vite-plugin-svgr": "^4.3.0"
+  }
+}

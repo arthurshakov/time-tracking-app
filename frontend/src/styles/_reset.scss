@@ -1,0 +1,74 @@
+/* ===== Modern CSS Reset ===== */
+/* Uses @use-friendly syntax (no @import) */
+/* Targets only problematic defaults       */
+
+/* Box sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default list styles */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Remove default button styles */
+button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* Remove default link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Remove default form styles */
+input,
+textarea,
+select {
+  font: inherit;
+  border: 1px solid;
+}
+
+/* Prevent img overflow */
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Remove animations for reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Reset headings to uniform size */
+h1, h2, h3, h4, h5, h6 {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+/* Remove table spacing defaults */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}

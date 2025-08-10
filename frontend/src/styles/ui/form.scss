@@ -1,0 +1,56 @@
+@use '@styles/vars' as *;
+@use '@styles/mixins' as *;
+
+$base-fz: 24;
+$base-border-radius: 4;
+$base-border-color: $color-grey;
+$base-hover-border-color: $color-grey-2;
+$base-transition: all 100ms;
+
+.form {
+  display: grid;
+  grid-template-columns: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: vc(350);
+  gap: vc(12);
+
+  &__input {
+    font-family: $font-source-code;
+    font-size: vc($base-fz);
+    padding: vc(6) vc(12);
+    text-align: center;
+    border-color: $base-border-color;
+    border-radius: vc($base-border-radius);
+    outline: none;
+    transition: $base-transition;
+    width: 100%;
+
+    &:hover,
+    &:focus {
+      border-color: $base-hover-border-color;
+    }
+  }
+
+  &__submit-button {
+    width: 100%;
+  }
+
+  &__error {
+    position: relative;
+    margin-top: vc(7);
+    color: $color-red;
+    font-size: 0.8em;
+    text-align: left;
+
+    &::before {
+      content: '❌ ';
+      font-size: 0.85em;
+      opacity: 0.8;
+      // position: absolute;
+      // right: 100%;
+      // top: 0;
+    }
+  }
+}

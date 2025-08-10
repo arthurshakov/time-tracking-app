@@ -1,0 +1,42 @@
+@use '@styles/mixins' as *;
+
+.header {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: $z-header;
+  background-color: $color-light-grey;
+  padding-top: vc(20);
+  padding-bottom: vc(20);
+  box-shadow: 0 0 10px rgba($color-black, 0.15);
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include mobile {
+      // flex-direction: column;
+      font-size: vc(15);
+      letter-spacing: -0.03em;
+    }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: vc(30);
+
+     @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: vc(10);
+    }
+  }
+
+  @include mobile {
+    padding-top: 0;
+    padding-bottom: vc(8);
+  }
+}

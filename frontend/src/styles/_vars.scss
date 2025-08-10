@@ -1,0 +1,54 @@
+// COLORS
+$color-black: #000;
+$color-white: #fff;
+$color-dark-grey: #323232;
+$color-dark-grey-2: #4e4e4e;
+$color-light-grey: #f7f7f7;
+$color-grey: #ced4da;
+$color-grey-2: #adb5bd;
+$color-red: #ff6b6b;
+
+$colors: (
+  'black': $color-black,
+  'white': $color-white,
+  'dark-grey': $color-dark-grey,
+  'dark-grey-2': $color-dark-grey-2,
+  'light-grey': $color-light-grey,
+  'grey': $color-grey,
+  'grey-2': $color-grey-2,
+  'red': $color-red,
+);
+
+@each $colorName, $colorValue in $colors {
+  .c-#{$colorName} {
+    color: $colorValue;
+  }
+}
+
+// FONTS
+$font-source: "Source Serif 4", serif;
+$font-source-code: "Source Code Pro", monospace;
+$font-space: "Space Mono", monospace;
+
+// TRANSITIONS
+$transition-duration: 0.35s;
+$transition-in: $transition-duration ease-in;
+$transition-out: $transition-duration ease-out;
+$transition-in-out: $transition-duration ease-in-out;
+$transition-short: 100ms;
+
+// SETTINGS
+$desktop-xxl: 2100;
+$desktop-xl: 1920;
+$desktop-lg: 1680;
+$desktop-md: 1440;
+$desktop-sm: 1366;
+$desktop-xs: 1280;
+$desktop: 1024;
+$tablet: 768;
+$mobile: 375;
+
+$base-border-radius: 4;
+
+// Z-INDICES
+$z-header: 100;

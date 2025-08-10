@@ -1,0 +1,50 @@
+@use '@styles/vars' as *;
+@use '@styles/mixins' as *;
+
+.list {
+  display: grid;
+  grid-template-columns: 100%;
+  gap: vc(20);
+  width: 100%;
+  max-width: vc(600);
+
+  &__item {
+    // flex-wrap: wrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: vc(5) vc(20);
+    font-size: vc(24);
+    border: 1px solid $color-grey;
+    gap: vc(20);
+    border-radius: vc($base-border-radius);
+  }
+
+  &__item-info {
+    text-align: left;
+    display: grid;
+    grid-template-columns: 100%;
+    // flex-wrap: wrap;
+    gap: vc(5) vc(20);
+  }
+
+  &__item-input {
+    border-radius: vc(3);
+    padding: vc(5) vc(7);
+  }
+
+  &__item-buttons {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    font-size: vc(18);
+  }
+
+  &__item-error {
+    width: 100%;
+    color: $color-red;
+    font-size: 0.7em;
+    margin-top: vc(-10);
+  }
+}

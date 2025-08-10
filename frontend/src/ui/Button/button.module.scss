@@ -1,0 +1,35 @@
+@use '@styles/mixins' as *;
+
+.icon-button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-dark-grey-2;
+  transition: $transition-short;
+  gap: vc(10);
+
+  &[disabled] {
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: $color-black;
+    }
+  }
+}
+
+.button {
+  border: 1px solid currentColor;
+  border-radius: vc($base-border-radius);
+  padding: vc(7) vc(20);
+  text-transform: uppercase;
+  font-weight: 600;
+  transform-origin: center;
+  transform: scale(1);
+
+  &__icon {
+    font-size: 0.8em;
+  }
+}

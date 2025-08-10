@@ -1,0 +1,32 @@
+@use '@styles/mixins' as *;
+
+.project-page {
+  width: 100%;
+  max-width: vc(600);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  max-width: 100%;
+  gap: vc(20);
+}
+
+.title-input {
+  min-width: 0;
+  width: auto;
+}
+
+.task {
+  &__list-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

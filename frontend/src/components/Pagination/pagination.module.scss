@@ -1,0 +1,21 @@
+@use '@styles/mixins' as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: vc(20);
+
+  &__info {
+    display: inline-flex;
+  }
+
+  &__link {
+    display: inline-flex;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

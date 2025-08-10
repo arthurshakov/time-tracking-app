@@ -1,0 +1,47 @@
+@use '@styles/mixins' as *;
+
+$base-fz: 24;
+$base-border-radius: 4;
+$base-border-color: $color-grey;
+$base-hover-border-color: $color-grey-2;
+$base-transition: all 100ms;
+
+.input {
+  font-family: $font-source-code;
+  font-size: vc($base-fz);
+  padding: vc(6) vc(12);
+  text-align: center;
+}
+
+/* Select */
+:global(div.select__control) {
+  font-size: vc($base-fz);
+  min-height: 0;
+  border-radius: vc($base-border-radius);
+}
+
+:global(div.select__value-container) {
+  padding: vc(2) vc(8);
+}
+
+:global(div.select__option) {
+  font-weight: 600;
+  font-size: vc($base-fz);
+  background-color: $color-light-grey;
+}
+
+.input,
+.textarea,
+:global(div.select__control) {
+  border-color: $base-border-color;
+  border-radius: vc($base-border-radius);
+  outline: none;
+  transition: $base-transition;
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus {
+      border-color: $base-hover-border-color;
+    }
+  }
+}

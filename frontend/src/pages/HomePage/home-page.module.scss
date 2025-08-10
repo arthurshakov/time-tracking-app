@@ -1,0 +1,10 @@
+@use '@styles/mixins' as *;
+
+.home-page {
+  min-height: 100vh;
+  text-align: center;
+
+  h1 {
+    margin-bottom: vc(40);
+  }
+}

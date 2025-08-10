@@ -1,0 +1,23 @@
+@use '@styles/mixins' as *;
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: vc(15);
+
+  a {
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    text-underline-offset: 0.3em;
+
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  @include mobile {
+    gap: vc(10);
+  }
+}

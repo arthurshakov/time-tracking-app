@@ -1,0 +1,94 @@
+const express = require('express')
+const { addProject, getProjects, editProject, deleteProject, getProject } = require('../controllers/project');
+const { addTimeEntry, editTimeEntry, deleteTimeEntry } = require('../controllers/timeEntry')
+const authenticated = require('../middlewares/authenticated')
+const hasRole = require('../middlewares/hasRole')
+const mapProject = require('../helpers/mapProject')
+const ROLES = require('../constants/roles');
+const mapTimeEntry = require('../helpers/mapTimeEntry');
+
+const router = express.Router({ mergeParams: true })
+
+router.get('/', authenticated, async (req, res) => {
+  const { projects, lastPage } = await getProjects(
+    req.query.search,
+    req.query.limit,
+    req.query.page,
+    req.user.id,
+  )
+
+  res.send({ data: { lastPage, projects: projects.map(mapProject) } })
+})
+
+router.get('/:id', authenticated, async (req, res) => {
+  const project = await getProject(req.params.id, req.user.id);
+
+  if (project) {
+    res.send({ data: mapProject(project), error: null });
+  } else {
+    res.send({ data: null, error: 'Failed to load project'})
+  }
+})
+
+router.post('/:id/time-entries', authenticated, async (req, res) => {
+  const newTimeEntry = await addTimeEntry({
+    projectId: req.params.id,
+    userId: req.user.id,
+    name: req.body.name,
+    duration: req.body.duration,
+  })
+
+  // res.send({ data: mapTimeEntry(newTimeEntry) });
+  res.send({ data: mapTimeEntry(newTimeEntry) });
+})
+
+router.patch('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([ROLES.ADMIN, ROLES.MODERATOR]), async (req, res) => {
+  const updatedTimeEntry = await editTimeEntry(
+    req.params.projectId,
+    req.user.id,
+    req.params.timeEntryId,
+    {
+      name: req.body.name,
+    }
+  );
+
+  res.send({ data: mapTimeEntry(updatedTimeEntry), error: null });
+})
+
+router.delete('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([ROLES.ADMIN, ROLES.MODERATOR]), async (req, res) => {
+  await deleteTimeEntry(
+    req.params.projectId,
+    req.user.id,
+    req.params.timeEntryId,
+  )
+
+  res.send({ error: null })
+})
+
+router.post('/', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
+  const newProject = await addProject({
+    userId: req.user.id,
+    name: req.body.name,
+  });
+
+  res.send({ data: mapProject(newProject) });
+})
+
+router.patch('/:id', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
+  const updatedProject = await editProject(
+    req.params.id,
+    {
+      name: req.body.name,
+    }
+  );
+
+  res.send({ data: mapProject(updatedProject) })
+})
+
+router.delete('/:id', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
+  await deleteProject(req.params.id);
+
+  res.send({ error: null })
+})
+
+module.exports = router

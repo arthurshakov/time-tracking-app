@@ -1,0 +1,106 @@
+@use '@styles/vars' as *;
+@use '@styles/mixins' as *;
+
+.h1,
+.h2,
+.h3 {
+  font-weight: 600;
+  font-family: $font-space;
+}
+
+.h1 {
+  @include desktop {
+    font-size: vc(48);
+  }
+
+  @include mobile {
+    font-size: vc(32);
+  }
+}
+
+.h2 {
+  @include desktop {
+    font-size: vc(36);
+  }
+
+  @include mobile {
+    font-size: vc(24);
+  }
+}
+
+.h3 {
+  @include desktop {
+    font-size: vc(24);
+  }
+
+  @include mobile {
+    font-size: vc(20);
+  }
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: vc(1700);
+
+  @include desktop {
+    padding-right: vc(40);
+    padding-left: vc(40);
+  }
+
+  @include devices {
+    padding-right: vc(15);
+    padding-left: vc(15);
+  }
+}
+
+.app {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s ease-in;
+
+  &.is-loaded {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.page {
+  padding-top: vc(130);
+  padding-bottom: vc(100);
+  transform: translate3d(0, vc(10), 0);
+  transition: 0.5s ease-out;
+  text-align: center;
+
+  &__container,
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: vc(20);
+    align-items: center;
+  }
+
+  &__top {
+    margin-bottom: 2em;
+    gap: vc(12);
+    width: 100%;
+  }
+
+  .app.is-loaded & {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.text-link {
+  text-decoration: underline;
+  // text-decoration-color: color-mix(in srgb, currentColor 60%, transparent);
+  text-underline-offset: 0.05em;
+  text-decoration-thickness: 0.055em;
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

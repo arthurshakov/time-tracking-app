@@ -1,0 +1,119 @@
+{
+  "users": [
+    {
+      "id": 0,
+      "login": "anton",
+      "password": "qwe123",
+      "roleId": 0,
+      "createdAt": "2023-10-15T10:00:00Z"
+    },
+    {
+      "login": "qwe",
+      "password": "qwe",
+      "createdAt": "2025-06-29T13:40:36.173Z",
+      "roleId": 1,
+      "id": 1
+    },
+    {
+      "login": "login",
+      "password": "pass",
+      "createdAt": "2025-07-06T14:06:08.722Z",
+      "roleId": 1,
+      "id": 2
+    },
+    {
+      "login": "login2",
+      "password": "login",
+      "createdAt": "2025-07-06T14:12:51.909Z",
+      "roleId": 1,
+      "id": 3
+    }
+  ],
+  "roles": [
+    {
+      "id": 0,
+      "name": "Аминистратор"
+    },
+    {
+      "id": 1,
+      "name": "Пользователь"
+    },
+    {
+      "id": 2,
+      "name": "Гость"
+    }
+  ],
+  "projects": [
+    {
+      "id": 14,
+      "userId": 0,
+      "name": "Project NN",
+      "duration": 0,
+      "completed": false,
+      "createdAt": "2023-10-15T10:00:00Z"
+    },
+    {
+      "id": 15,
+      "userId": 0,
+      "name": "Project O",
+      "duration": 0,
+      "completed": false,
+      "createdAt": "2023-10-15T10:00:00Z"
+    },
+    {
+      "id": 16,
+      "userId": 0,
+      "name": "Project P",
+      "duration": 0,
+      "completed": false,
+      "createdAt": "2023-10-15T10:00:00Z"
+    }
+  ],
+  "time-entries": [],
+  "sessions": [
+    {
+      "id": "cd6386c8-fe82-472e-802e-16954a85dff6",
+      "user": {
+        "id": 0,
+        "login": "anton",
+        "roleId": 0,
+        "createdAt": "2023-10-15T10:00:00Z"
+      },
+      "createdAt": "2025-07-05T17:38:51.141Z",
+      "expiresAt": "2025-07-06T17:38:51.141Z"
+    },
+    {
+      "id": "11b2ddee-185f-4cad-be40-dcaaa5f16eff",
+      "user": {
+        "id": 0,
+        "login": "anton",
+        "roleId": 0,
+        "createdAt": "2023-10-15T10:00:00Z"
+      },
+      "createdAt": "2025-07-06T09:18:31.997Z",
+      "expiresAt": "2025-07-07T09:18:32.003Z"
+    },
+    {
+      "id": "cd08e873-f5bd-42d5-9e91-d7180bddbe4d",
+      "user": {
+        "id": 2,
+        "login": "login",
+        "roleId": 1,
+        "createdAt": "2025-07-06T14:06:08.722Z"
+      },
+      "createdAt": "2025-07-06T14:06:08.790Z",
+      "expiresAt": "2025-07-07T14:06:08.790Z"
+    },
+    {
+      "id": "89df2fbb-dd51-4698-9ed4-e1a1abc7d1e3",
+      "user": {
+        "id": 0,
+        "login": "anton",
+        "roleId": 0,
+        "createdAt": "2023-10-15T10:00:00Z"
+      },
+      "createdAt": "2025-07-06T14:14:35.637Z",
+      "expiresAt": "2025-07-07T14:14:35.637Z"
+    }
+  ]
+}

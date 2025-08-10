@@ -1,0 +1,32 @@
+@use '@styles/mixins' as *;
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: vc(10);
+  font-family: $font-space;
+
+  &__image {
+    flex-shrink: 0;
+    width: vc(50);
+    height: vc(50);
+
+    @include mobile {
+      width: vc(35);
+      height: vc(35);
+    }
+  }
+
+  &__name {
+    text-transform: uppercase;
+  }
+
+  &__slogan {
+    font-size: 0.75em;
+    opacity: 0.7;
+  }
+
+  @include mobile {
+    gap: vc(5);
+  }
+}
