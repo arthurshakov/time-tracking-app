@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: vc(50);
+    gap: vc(20);
     text-align: center;
   }
 
@@ -29,6 +29,14 @@
     display: grid;
     grid-template-columns: 100%;
     gap: vc(20);
+
+    input {
+      width: vc(600);
+
+      @include mobile {
+        width: 100%;
+      }
+    }
 
     @include mobile {
       width: 100%;

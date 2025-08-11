@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { IconButton, TextInput, Select } from '../../ui';
+import { Button, IconButton, TextInput, Select } from '../../ui';
 import styles from './timer.module.scss';
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../selectors';
@@ -7,7 +7,7 @@ import { AuthWrapper } from '../AuthWrapper/AuthWrapper';
 import { getTimeFromSeconds } from '../../utils';
 import { request } from '../../utils/request';
 
-export const TimerBlock = () => {
+export const Timer = ({projectId = null, onSaveCallback = null}) => {
   const [projectsOptions, setProjectsOptions] = useState([]);
   // const [isLoadingProjects, setIsLoadingProjects] = useState(false);
   const [error, setError] = useState(false);
@@ -33,10 +33,10 @@ export const TimerBlock = () => {
       }
     };
 
-    if (isAuthenticated) {
+    if (isAuthenticated && !projectId) {
       fetchProjects();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, projectId]);
 
   useEffect(() => {
     return () => {
@@ -92,7 +92,7 @@ export const TimerBlock = () => {
       return;
     }
 
-    if (!selectedProject) {
+    if (!selectedProject && !projectId) {
       alert('Select a project');
       return;
     }
@@ -102,16 +102,28 @@ export const TimerBlock = () => {
       return;
     }
 
+    const endpoint = projectId
+      ? `/api/projects/${projectId}/time-entries`
+      : `/api/projects/${selectedProject.value}/time-entries`
+    ;
+
     try {
-      await request(`/api/projects/${selectedProject.value}/time-entries`, 'POST', {
+      const newTask = await request(endpoint, 'POST', {
         name: taskName.trim(),
         duration: totalSeconds,
       });
 
       alert('Time entry saved successfully!');
       onReset();
-      setTaskName('')
-      setSelectedProject(null);
+      setTaskName('');
+
+      if (!projectId) {
+        setSelectedProject(null);
+      }
+
+      if (onSaveCallback) {
+        onSaveCallback(newTask.data);
+      }
     } catch (error) {
       console.error('Failed to save time entry:', error);
       alert('Failed to save time entry. Please try again.');
@@ -141,18 +153,31 @@ export const TimerBlock = () => {
         {
           error
           ? <div>{error}</div>
-          : <div className={styles['timer__project-controls']}>
-              <Select
-                options={projectsOptions}
-                isSearchable
-                placeholder="Choose a project..."
-                className={styles['timer__project-select']}
-                value={selectedProject}
-                onChange={setSelectedProject}
-                />
+          : <>
+              <div className={styles['timer__project-controls']}>
 
-              <TextInput placeholder="Name the current task..." value={taskName} onChange={(event) => setTaskName(event.target.value)} />
-            </div>
+                {/* If we don't have initial projectId then we show projects options */}
+                { !projectId &&
+                  <Select
+                  options={projectsOptions}
+                  isSearchable
+                  placeholder="Choose a project..."
+                  className={styles['timer__project-select']}
+                  value={selectedProject}
+                  onChange={setSelectedProject}
+                  />
+                }
+
+                <TextInput placeholder="Name the current task..." value={taskName} onChange={(event) => setTaskName(event.target.value)} />
+              </div>
+
+              {
+                !projectId &&
+                <div className={styles['button-wrapper']}>
+                  <Button icon="plus" variant="link" to="/projects/create">Create new project</Button>
+                </div>
+              }
+            </>
         }
       </AuthWrapper>
     </div>

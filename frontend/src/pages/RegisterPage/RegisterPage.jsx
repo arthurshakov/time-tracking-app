@@ -44,7 +44,7 @@ export const RegisterPage = () => {
 
   return (
     <div className="page">
-      <div className="container">
+      <div className="page__container">
         <h1 className="h1">Register</h1>
 
         <form noValidate className="form" onSubmit={handleSubmit(onSubmit)}>

@@ -1,13 +1,13 @@
-import { Button } from '../../ui';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { request } from '../../utils/request';
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../selectors';
-import { AuthWrapper, ListItem } from '../../components';
+import { AuthWrapper, ListItem, Timer } from '../../components';
 import { IconButton } from '../../ui';
 import { getTimeFromSeconds } from '../../utils';
+import { Page404 } from '../Page404/Page404';
 import styles from './project-page.module.scss';
 
 export const ProjectPage = () => {
@@ -25,7 +25,6 @@ export const ProjectPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('use Effect')
     const fetchProject = async () => {
       try {
         const projectData = await request(`/api/projects/${id}`);
@@ -33,8 +32,11 @@ export const ProjectPage = () => {
         console.log(projectData);
 
         if (projectData.error) {
-          console.log('setting error')
-          setError(projectData.error);
+          if (projectData.status === 404) {
+            setError(404);
+          } else {
+            setError(projectData.error);
+          }
         } else {
           setProject(projectData.data);
           setProjectTitle(projectData.data.name);
@@ -42,7 +44,7 @@ export const ProjectPage = () => {
           setTimeEntries(projectData.data.timeEntries);
         }
       } catch(error) {
-        console.log(error || 'Failed to load project')
+        console.log('caught error', error)
         setError('Failed to load project');
       } finally {
         setIsLoading(false);
@@ -91,7 +93,15 @@ export const ProjectPage = () => {
   };
 
   const onRemoveFromList = (timeEntryId) => {
-    setTimeEntries(timeEntries.filter(({id}) => timeEntryId !== id));
+    setTimeEntries(timeEntries.filter((entry) => {
+      if (timeEntryId === entry.id) {
+        updateTotalDuration(-entry.duration);
+
+        return false;
+      } else {
+        return true;
+      }
+    }));
   };
 
   const onProjectDelete = async () => {
@@ -111,6 +121,24 @@ export const ProjectPage = () => {
   const onTitleCancel = () => {
     setEditedTitle(projectTitle);
     setTitleIsBeingEdited(false);
+  }
+
+  const updateTotalDuration = (durationToAdd) => {
+    setProject(prevProject => ({
+      ...prevProject,
+      duration: Math.max(prevProject.duration + durationToAdd, 0),
+    }));
+  }
+
+  const onTaskSave = (newTask) => {
+    const newTimeEntries = [...timeEntries, newTask];
+
+    updateTotalDuration(newTask.duration);
+    setTimeEntries(newTimeEntries);
+  }
+
+  if (error === 404) {
+    return <Page404 />;
   }
 
   if (!isAuthenticated) {
@@ -202,10 +230,15 @@ export const ProjectPage = () => {
           <div className="h3">Total duration: {getTimeFromSeconds(project.duration)}</div>
         </div>
 
-        <div className={styles['task__list-top']}>
-          <h2 className="h2">Tasks</h2>
+        <div className={styles['timer-wrapper']}>
+          <h2 className="h2">Start tracking time</h2>
+          <Timer projectId={id} onSaveCallback={onTaskSave} />
+        </div>
 
-          <Button icon="plus">Create</Button>
+        <div className={styles['task__list-top']}>
+          <h2 className="h2">Done tasks</h2>
+
+          {/* <Button icon="plus">Create</Button> */}
         </div>
 
         <div className="list">
@@ -215,7 +248,7 @@ export const ProjectPage = () => {
               <ListItem id={id} name={name} duration={duration} key={id} endpoint={`/api/projects/${project.id}/time-entries/${id}`} onRemoveFromList={onRemoveFromList} />
             ))
 
-            : <div>You have no tasks to show at the moment</div>
+            : <div>At this moment there are no tasks to show in this project</div>
           }
         </div>
       </div>

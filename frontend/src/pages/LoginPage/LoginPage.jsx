@@ -48,7 +48,7 @@ export const LoginPage = () => {
 
   return (
     <div className="page">
-      <div className="container">
+      <div className="page__container">
         <h1 className="h1">Log in</h1>
         <form noValidate className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__field">

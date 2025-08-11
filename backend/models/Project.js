@@ -47,6 +47,12 @@ projectSchema.methods.updateDuration = async function() {
   await this.save();
 };
 
+// pre-delete hook to delete all timeEntries included in this project
+projectSchema.pre('deleteOne', { document: false, query: true }, async function() {
+  const doc = await this.model.findOne(this.getFilter());
+  await mongoose.model('TimeEntry').deleteMany({ projectId: doc._id });
+});
+
 const Project = mongoose.model('Project', projectSchema);
 
 module.exports = Project;

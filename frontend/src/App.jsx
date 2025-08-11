@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
-import { HomePage, ProjectsPage, ProjectPage, LoginPage, RegisterPage } from "./pages";
-import { Header, ProtectedRoute } from "./components";
+import { HomePage, ProjectsPage, ProjectPage, LoginPage, RegisterPage, Page404 } from "./pages";
+import { Header } from "./components";
 import { useAuth } from "./hooks";
 
 export const App = () => {
@@ -16,7 +16,7 @@ export const App = () => {
         <Route path="/projects/" element={<ProjectsPage />} />
         <Route path="/projects/create" element={<ProjectPage />} />
         <Route path="/projects/:id" element={<ProjectPage />} />
-        <Route path="*" element={<div>Ошибка 404</div>} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </div>
   );

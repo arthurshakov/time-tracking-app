@@ -16,36 +16,16 @@ async function addProject(project) {
 async function editProject(id, project) {
   const newProject = await Project.findByIdAndUpdate(id, project, {returnDocument: 'after'})
 
-  // await newProject.populate({
-  //   path: 'comments',
-  //   populate: 'author',
-  // });
-
   return newProject;
 }
 
 // delete
 function deleteProject(id) {
+  // await mongoose.model('TimeEntry').deleteMany({ projectId: id });
   return Project.deleteOne({_id: id});
 }
 
 // get list with search and pagination
-// async function getProjects(search = '', limit = null, page = 1, userId) {
-//   const [projects, count] = await Promise.all([
-//     Project.find({name: {$regex: search, $options: 'i'}, userId: userId})
-//       .skip(limit ? (page - 1) * limit : 0)
-//       .limit(limit || null)
-//       .sort({createdAt: -1})
-//       .populate('timeEntries'),
-
-//     Project.countDocuments({name: {$regex: search, $options: 'i'}, userId: userId})
-//   ]);
-
-//   return {
-//     projects,
-//     lastPage: limit ? Math.ceil(count / limit) : 1,
-//   }
-// }
 async function getProjects(search = '', limit = null, page = 1, userId) {
   const query = {
     name: { $regex: search, $options: 'i' },
@@ -76,16 +56,18 @@ async function getProjects(search = '', limit = null, page = 1, userId) {
 }
 
 // get post
-function getProject(id, userId) {
-  // return Project.findById(id).populate({
-  //   path: 'comments',
-  //   populate: 'author',
-  // });
+async function getProject(id, userId) {
+  try {
+    const project = await Project.findOne({
+      _id: id,
+      userId: userId,
+    }).populate('timeEntries');
 
-  return Project.findOne({
-    _id: id,
-    userId: userId,
-  }).populate('timeEntries');
+    return project || null; // Explicitly return null for missing projects
+  } catch (error) {
+    console.error('Database error:', error);
+    throw error; // Only throw for genuine database errors
+  }
 }
 
 module.exports = {

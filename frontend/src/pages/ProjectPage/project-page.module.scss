@@ -7,6 +7,12 @@
   margin-left: auto;
 }
 
+.timer-wrapper {
+  margin-bottom: 1em;
+  border-bottom: 1px solid $color-grey-2;
+  padding-bottom: 2em;
+}
+
 .title-wrapper {
   display: flex;
   align-items: center;
@@ -26,7 +32,7 @@
   &__list-top {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
   }
 }

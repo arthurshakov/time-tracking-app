@@ -17,6 +17,7 @@ export const ListItem = ({id, name, duration, endpoint, onRemoveFromList, link =
 
       if (updatedProject.error) {
         console.log(updatedProject.error);
+        setEditedName(currentName);
         setEditingError(updatedProject.error || 'Failed to&nbsp;update project');
       } else {
         setCurrentName(updatedProject.data.name);
@@ -50,43 +51,45 @@ export const ListItem = ({id, name, duration, endpoint, onRemoveFromList, link =
   }
 
   return (
-    <div className="list__item">
-      <div className="list__item-info">
-        {
-          isEditing ?
-            <input
-              className="list__item-input"
-              value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
-            />
-          : link
-            ?
-              <Link
-                to={`/projects/${id}`}
-                className="text-link"
-              >{currentName}</Link>
-            :
-              <div>{currentName}</div>
-        }
+    <>
+      <div className="list__item">
+        <div className="list__item-info">
+          {
+            isEditing ?
+              <input
+                className="list__item-input"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            : link
+              ?
+                <Link
+                  to={`/projects/${id}`}
+                  className="text-link"
+                >{currentName}</Link>
+              :
+                <div>{currentName}</div>
+          }
 
-        <div>{getTimeFromSeconds(duration)}</div>
-      </div>
-      <div className="list__item-buttons">
-        {isEditing ? (
-          <>
-            <IconButton id="check" size="md" title="Save" onClick={onSave} />
-            <IconButton id="times" size="md" title="Cancel" onClick={onCancel} />
-          </>
-        ) : (
-          <>
-            <IconButton id="edit" size="md" title="Edit" onClick={() => setIsEditing(true)} />
-            <IconButton id="trash-o" size="md" title="Delete" onClick={() => onDelete(id)} />
-          </>
-        )}
+          <div>{getTimeFromSeconds(duration)}</div>
+        </div>
+        <div className="list__item-buttons">
+          {isEditing ? (
+            <>
+              <IconButton id="check" size="md" title="Save" onClick={onSave} />
+              <IconButton id="times" size="md" title="Cancel" onClick={onCancel} />
+            </>
+          ) : (
+            <>
+              <IconButton id="edit" size="md" title="Edit" onClick={() => setIsEditing(true)} />
+              <IconButton id="trash-o" size="md" title="Delete" onClick={() => onDelete(id)} />
+            </>
+          )}
+        </div>
       </div>
       {
         editingError && <div className="list__item-error">{editingError}</div>
       }
-    </div>
+    </>
   );
 };

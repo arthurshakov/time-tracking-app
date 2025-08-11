@@ -1,4 +1,5 @@
-import { TimerBlock } from '../../components';
+import { Timer } from '../../components';
+import { Button } from '../../ui';
 import styles from './home-page.module.scss';
 
 export const HomePage = () => {
@@ -6,7 +7,9 @@ export const HomePage = () => {
     <div className={`page ${styles['home-page']}`}>
       <div className="container">
         <h1 className="h1">Rule&nbsp;#1 of time&#8209;tracking:<br />you have to&nbsp;track&nbsp;time.</h1>
-        <TimerBlock />
+
+        <Timer />
+
       </div>
     </div>
   );
