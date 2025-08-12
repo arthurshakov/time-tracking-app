@@ -1,7 +1,30 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const tokenHelper = require('../helpers/token');
-const roles = require('../constants/roles');
+// const roles = require('../constants/roles');
+
+// update password
+async function updatePassword(userId, newPassword) {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const passwordIsTheSame = await bcrypt.compare(newPassword, user.password);
+
+  if (passwordIsTheSame) {
+    throw new Error('New password must be different');
+  }
+
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
+
+  user.password = newPasswordHash;
+
+  await user.save();
+
+  return {success: 'Password is successfully reset'};
+}
 
 // registration
 async function register(login, password) {
@@ -31,7 +54,7 @@ async function login(login, password) {
   const passwordIsCorrect = await bcrypt.compare(password, user.password);
 
   if (!passwordIsCorrect) {
-    throw new Error('Password isWrong password');
+    throw new Error('Wrong password');
   }
 
   const token = tokenHelper.generate({id: user.id});
@@ -39,35 +62,36 @@ async function login(login, password) {
   return {user, token};
 }
 
-// get users
-async function getUsers() {
-  return User.find();
-}
+// // get users
+// async function getUsers() {
+//   return User.find();
+// }
 
-// get roles
-function getRoles() {
-  return [
-    {id: roles.ADMIN, name: 'Admin'},
-    {id: roles.MODERATOR, name: 'Moderator'},
-    {id: roles.USER, name: 'User'},
-  ];
-}
+// // get roles
+// function getRoles() {
+//   return [
+//     {id: roles.ADMIN, name: 'Admin'},
+//     {id: roles.MODERATOR, name: 'Moderator'},
+//     {id: roles.USER, name: 'User'},
+//   ];
+// }
 
-// delete
-async function deleteUser(id) {
-  return User.deleteOne({_id: id});
-}
+// // delete
+// async function deleteUser(id) {
+//   return User.deleteOne({_id: id});
+// }
 
-// update (roles)
-async function updateUser(id, userData) {
-  return User.findByIdAndUpdate(id, userData, {returnDocument: 'after'});
-}
+// // update (roles)
+// async function updateUser(id, userData) {
+//   return User.findByIdAndUpdate(id, userData, {returnDocument: 'after'});
+// }
 
 module.exports = {
   register,
   login,
-  getUsers,
-  getRoles,
-  deleteUser,
-  updateUser,
+  // getUsers,
+  // getRoles,
+  // deleteUser,
+  // updateUser,
+  updatePassword,
 };

@@ -1,0 +1,15 @@
+@use '@styles/mixins' as *;
+
+analytics-page {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  max-width: vc(600);
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

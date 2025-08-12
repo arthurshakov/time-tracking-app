@@ -14,7 +14,7 @@ export const RegisterPage = () => {
   // IF THE USER IS ALREADY LOGGED IN WE REDIRECT HIM TO HOMEPAGE
   useAuthRedirect();
 
-  // HERE IS THE LOGIC OF RENDERING THE LOGIN FORM IF THE USER IS NOT LOGGED IN
+  // RENDERING THE LOGIN FORM IF THE USER IS NOT LOGGED IN
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -90,7 +90,7 @@ export const RegisterPage = () => {
           </div>
 
           {error && (
-            <div class="c-red">{error}</div>
+            <div className="c-red">{error}</div>
           )}
         </form>
       </div>

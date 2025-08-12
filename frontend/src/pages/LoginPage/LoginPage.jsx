@@ -80,7 +80,7 @@ export const LoginPage = () => {
           </div>
 
           {authError && (
-            <div class="c-red">{authError}</div>
+            <div className="c-red">{authError}</div>
           )}
         </form>
       </div>

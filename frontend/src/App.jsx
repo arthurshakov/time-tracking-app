@@ -1,5 +1,14 @@
 import { Route, Routes } from "react-router";
-import { HomePage, ProjectsPage, ProjectPage, LoginPage, RegisterPage, Page404 } from "./pages";
+import {
+  HomePage,
+  ProjectsPage,
+  ProjectPage,
+  LoginPage,
+  RegisterPage,
+  Page404,
+  ProfilePage,
+  AnalyticsPage,
+} from "./pages";
 import { Header } from "./components";
 import { useAuth } from "./hooks";
 
@@ -16,6 +25,8 @@ export const App = () => {
         <Route path="/projects/" element={<ProjectsPage />} />
         <Route path="/projects/create" element={<ProjectPage />} />
         <Route path="/projects/:id" element={<ProjectPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="*" element={<Page404 />} />
       </Routes>
     </div>

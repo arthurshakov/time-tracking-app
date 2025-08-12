@@ -57,7 +57,7 @@ router.post('/:id/time-entries', authenticated, async (req, res) => {
   res.send({ data: mapTimeEntry(newTimeEntry) });
 })
 
-router.patch('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([ROLES.ADMIN, ROLES.MODERATOR]), async (req, res) => {
+router.patch('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
   const updatedTimeEntry = await editTimeEntry(
     req.params.projectId,
     req.user.id,
@@ -70,7 +70,7 @@ router.patch('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([RO
   res.send({ data: mapTimeEntry(updatedTimeEntry), error: null });
 })
 
-router.delete('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([ROLES.ADMIN, ROLES.MODERATOR]), async (req, res) => {
+router.delete('/:projectId/time-entries/:timeEntryId', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
   await deleteTimeEntry(
     req.params.projectId,
     req.user.id,
