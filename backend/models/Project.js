@@ -22,8 +22,8 @@ const projectSchema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    maxLegth: 100,
-    unique: true,
+    maxLength: 100,
+    // unique: true,
   },
   // timeEntries: [{
   //   type: mongoose.Schema.Types.ObjectId,
@@ -34,6 +34,9 @@ const projectSchema = mongoose.Schema({
   toJSON: {virtuals: true},
   toObject: {virtuals: true},
 });
+
+// Add compound index for unique project names per user
+projectSchema.index({ userId: 1, name: 1 }, { unique: true });
 
 projectSchema.virtual('timeEntries', {
   ref: 'TimeEntry',
