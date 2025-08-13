@@ -26,32 +26,25 @@ function deleteProject(id) {
 }
 
 // get list with search and pagination
-async function getProjects(search = '', limit = null, page = 1, userId) {
+async function getProjects(search = '', limit = null, page = 1, createdAt = 'desc', userId) {
   const query = {
     name: { $regex: search, $options: 'i' },
-    userId: userId
+    userId,
   };
-
-  // const projectsQuery = Project.find(query)
-  //   .skip(limit ? (page - 1) * limit : 0)
-  //   .limit(limit || null)
-  //   .sort({ createdAt: -1 })
-  //   .populate('timeEntries');
 
   const [projects, count] = await Promise.all([
     Project.find(query)
+      .sort({ createdAt })
       .skip(limit ? (page - 1) * limit : 0)
-      .limit(limit || null)
-      .sort({ createdAt: -1 }),
-      // .populate('timeEntries'),
+      .limit(limit || 0),
+
     Project.countDocuments(query)
   ]);
-
-  // const plainProjects = projects.map(p => p.toObject({ virtuals: true }));
 
   return {
     projects: projects,
     lastPage: limit ? Math.ceil(count / limit) : 1,
+    totalCount: count,
   };
 }
 

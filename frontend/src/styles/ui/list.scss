@@ -34,6 +34,35 @@
     padding: vc(5) vc(7);
   }
 
+  &__controls {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: vc(10);
+    width: 100%;
+  }
+
+  &__search {
+    position: relative;
+    width: 100%;
+
+    input {
+      width: 100%;
+      padding-right: vc(40);
+    }
+
+    button {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate3d(0, -50%, 0);
+    }
+  }
+
+  &__item-date {
+    font-size: 0.75em;
+    color: $color-dark-grey-2;
+  }
+
   &__item-buttons {
     display: flex;
     flex-direction: column;

@@ -4,11 +4,17 @@ import { getTimeFromSeconds } from "../../utils";
 import { Link } from "react-router-dom";
 import { IconButton } from "../../ui";
 
-export const ListItem = ({id, name, duration, endpoint, onRemoveFromList, link = null}) => {
+export const ListItem = ({id, name, duration, endpoint, createdAt = null, onRemoveFromList, link = null}) => {
   const [editingError, setEditingError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name);
   const [currentName, setCurrentName] = useState(name);
+  const date = new Date(createdAt);
+  const formattedDate = date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 
   const onSave = async () => {
     try {
@@ -72,6 +78,11 @@ export const ListItem = ({id, name, duration, endpoint, onRemoveFromList, link =
           }
 
           <div>{getTimeFromSeconds(duration)}</div>
+
+          {
+            createdAt &&
+            <div className="list__item-date">Created on {formattedDate}</div>
+          }
         </div>
         <div className="list__item-buttons">
           {isEditing ? (

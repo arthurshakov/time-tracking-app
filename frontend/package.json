@@ -16,6 +16,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",
@@ -28,6 +29,7 @@
     "redux-thunk": "^3.1.0",
     "styled-components": "^6.1.19",
     "uuid": "^11.1.0",
+    "recharts": "^3.1.2",
     "yup": "^1.6.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 @use '@styles/mixins' as *;
 
-analytics-page {
+.analytics-page {
   margin-right: auto;
   margin-left: auto;
   width: 100%;
@@ -11,5 +11,27 @@ analytics-page {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+  }
+}
+
+.charts-container {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+
+  .recharts-responsive-container {
+    width: vc(600) !important;
+    height: vc(300) !important;
+  }
+}
+
+.chart {
+  background: white;
+  padding: 1rem;
+  border-radius: vc(10);
+  box-shadow: 0 vc(2) vc(2) rgba(0, 0, 0, 0.1);
+
+  text {
+    font-size: vc(14);
   }
 }

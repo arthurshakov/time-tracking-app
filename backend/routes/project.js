@@ -11,14 +11,15 @@ const mongoose = require('mongoose');
 const router = express.Router({ mergeParams: true })
 
 router.get('/', authenticated, async (req, res) => {
-  const { projects, lastPage } = await getProjects(
-    req.query.search,
-    req.query.limit,
-    req.query.page,
+  const { projects, lastPage, totalCount } = await getProjects(
+    req.query.search || '',
+    req.query.limit || null,
+    req.query.page || 1,
+    req.query.sort || 'desc',
     req.user.id,
   )
 
-  res.send({ data: { lastPage, projects: projects.map(mapProject) } })
+  res.send({ data: { lastPage, projects: projects.map(mapProject), totalCount } })
 })
 
 router.get('/:id', authenticated, async (req, res) => {

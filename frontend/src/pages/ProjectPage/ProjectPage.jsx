@@ -185,6 +185,7 @@ export const ProjectPage = () => {
             />
             <div className="list__item-buttons">
               <IconButton id="check" size="md" title="Save" onClick={onTitleSave} />
+              <IconButton id="times" size="md" title="Cancel" onClick={() => navigate('/projects')} />
             </div>
           </div>
           {
@@ -244,8 +245,16 @@ export const ProjectPage = () => {
         <div className="list">
           {
             timeEntries.length
-            ? timeEntries.map(({id, name, duration}) => (
-              <ListItem id={id} name={name} duration={duration} key={id} endpoint={`/api/projects/${project.id}/time-entries/${id}`} onRemoveFromList={onRemoveFromList} />
+            ? timeEntries.map(({id, name, duration, createdAt}) => (
+              <ListItem
+                id={id}
+                name={name}
+                duration={duration}
+                createdAt={createdAt}
+                key={id}
+                endpoint={`/api/projects/${project.id}/time-entries/${id}`}
+                onRemoveFromList={onRemoveFromList}
+              />
             ))
 
             : <div>At this moment there are no tasks to show in this project</div>
