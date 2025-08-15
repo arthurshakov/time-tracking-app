@@ -1,11 +1,13 @@
 import { Button } from "../../ui";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../../actions";
 import { getFormSchema } from "../../utils";
+import { request } from "../../utils/request";
 import { useAuthRedirect } from "../../hooks";
-import { authSelector } from "../../selectors";
-import { loginUser } from "../../actions";
 
 const loginFormSchema = getFormSchema(['login', 'password']);
 
@@ -13,14 +15,15 @@ export const LoginPage = () => {
   // IF THE USER IS ALREADY LOGGED IN WE REDIRECT HIM TO HOMEPAGE
   useAuthRedirect();
 
+  const navigate = useNavigate();
+  const [authError, setAuthError] = useState(null);
   const dispatch = useDispatch();
-  const { error, isLoginError, isLoading } = useSelector(authSelector);
 
   const {
     register,
     // reset,
     handleSubmit,
-    formState: {errors, isSubmitting},
+    formState: {errors},
   } = useForm({
     defaultValues: {
       login: '',
@@ -29,8 +32,17 @@ export const LoginPage = () => {
     resolver: yupResolver(loginFormSchema),
   });
 
-  const onSubmit = (formFields) => {
-    dispatch(loginUser(formFields));
+  const onSubmit = async (formFields) => {
+    const {error: authError, user} = await request('/api/login', 'POST', formFields);
+
+    if (authError) {
+      setAuthError(authError);
+    } else {
+      // After successful login
+      dispatch(loginAction(user));
+
+      navigate('/');
+    }
   };
 
   return (
@@ -63,17 +75,11 @@ export const LoginPage = () => {
           </div>
 
           <div className="form__footer">
-            <Button
-              type="submit"
-              className="form__submit-button"
-              disabled={isLoading || isSubmitting}
-            >
-              {isLoading || isSubmitting ? "Logging in..." : "Submit"}
-            </Button>
+            <Button type="submit" className="form__submit-button">Submit</Button>
           </div>
 
-          {isLoginError && (
-            <div className="c-red">{error || "Login failed. Please try again."}</div>
+          {authError && (
+            <div className="c-red">{authError}</div>
           )}
         </form>
       </div>

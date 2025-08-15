@@ -62,16 +62,6 @@ export const ProfilePage = () => {
     )
   }
 
-  // if (isLoading) {
-  //   return (
-  //     <main className={`page ${styles['profile-page']}`}>
-  //       <div className="container page__container">
-  //         <div className="container">Loading...</div>
-  //       </div>
-  //     </main>
-  //   )
-  // }
-
   return (
     <div className={`page ${styles['profile-page']}`}>
       <div className="container page__container">
@@ -86,7 +76,7 @@ export const ProfilePage = () => {
               placeholder="New password"
               {...register('password')}
             />
-             {errors.password && (
+            {errors.password && (
               <p className="form__error">{errors.password.message}</p>
             )}
           </div>

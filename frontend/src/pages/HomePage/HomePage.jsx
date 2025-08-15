@@ -1,5 +1,4 @@
 import { Timer } from '../../components';
-import { Button } from '../../ui';
 import styles from './home-page.module.scss';
 
 export const HomePage = () => {

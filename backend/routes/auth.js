@@ -13,7 +13,7 @@ router.post('/authenticate', async (req, res) => {
 
     res.send({
       error: null,
-      user: mapUser(authenticatedUser),
+      user: authenticatedUser ? mapUser(authenticatedUser) : null,
     });
   } catch(error) {
     res.send({

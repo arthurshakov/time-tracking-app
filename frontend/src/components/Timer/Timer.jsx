@@ -1,42 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, IconButton, TextInput, Select } from '../../ui';
 import styles from './timer.module.scss';
-import { useSelector } from 'react-redux';
-import { authSelector } from '../../selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelector, projectsSelector } from '../../selectors';
 import { AuthWrapper } from '../AuthWrapper/AuthWrapper';
 import { getTimeFromSeconds } from '../../utils';
 import { request } from '../../utils/request';
+import { fetchProjects } from '../../actions';
 
 export const Timer = ({projectId = null, onSaveCallback = null}) => {
   const [projectsOptions, setProjectsOptions] = useState([]);
-  // const [isLoadingProjects, setIsLoadingProjects] = useState(false);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [taskName, setTaskName] = useState('');
   const intervalRef = useRef(null);
+  const dispatch = useDispatch();
   const {isAuthenticated} = useSelector(authSelector);
+  const {allProjects, error} = useSelector(projectsSelector);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const {data: projectsData} = await request('/api/projects');
-
-        setProjectsOptions(projectsData.projects.map(project => ({
-          value: project.id,
-          label: project.name,
-        })));
-      } catch (err) {
-        setError(err.message || 'Failed to load projects');
-        console.error(err);
-      }
-    };
-
     if (isAuthenticated && !projectId) {
-      fetchProjects();
+      dispatch(fetchProjects());
     }
-  }, [isAuthenticated, projectId]);
+  }, [isAuthenticated, projectId, dispatch]);
+
+  // Map allProjects to projectsOptions when allProjects changes
+  useEffect(() => {
+    if (allProjects && allProjects.length > 0) {
+      const mappedProjects = allProjects.map(project => ({
+        value: project.id,
+        label: project.name,
+      }));
+
+      setProjectsOptions(mappedProjects);
+    }
+  }, [allProjects]);
 
   useEffect(() => {
     return () => {
