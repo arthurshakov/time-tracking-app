@@ -1,12 +1,12 @@
 import { Button } from "../../ui";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-// import { useAuthRedirect } from "../../hooks";
 import { getFormSchema } from "../../utils";
-import { request } from "../../utils/request";
 import { useAuthRedirect } from "../../hooks";
+import { registerUser } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { authSelector } from "../../selectors";
+import { useNavigate } from "react-router";
 
 const signupFormSchema = getFormSchema(['login', 'password', 'repeat-password']);
 
@@ -15,14 +15,16 @@ export const RegisterPage = () => {
   useAuthRedirect();
 
   // RENDERING THE LOGIN FORM IF THE USER IS NOT LOGGED IN
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, isLoginError, isLoading } = useSelector(authSelector);
 
   const {
     register,
     // reset,
     handleSubmit,
-    formState: {errors},
+    formState: {errors, isSubmitting},
   } = useForm({
     defaultValues: {
       login: '',
@@ -33,11 +35,9 @@ export const RegisterPage = () => {
   });
 
   const onSubmit = async (formFields) => {
-    const registerResponse = await request('/api/register', 'POST', formFields);
+    const {error: registrationError} = await dispatch(registerUser(formFields));
 
-    if (registerResponse.error) {
-      setError(registerResponse.error);
-    } else {
+    if (!registrationError) {
       navigate('/login');
     }
   };
@@ -80,17 +80,23 @@ export const RegisterPage = () => {
               placeholder="Repeat password"
               {...register('repeatPassword')}
             />
-             {errors.repeatPassword && (
+            {errors.repeatPassword && (
               <p className="form__error">{errors.repeatPassword.message}</p>
             )}
           </div>
 
           <div className="form__footer">
-            <Button type="submit" className="form__submit-button">Submit</Button>
+            <Button
+              type="submit"
+              className="form__submit-button"
+              disabled={isLoading || isSubmitting}
+            >
+              {isLoading || isSubmitting ? "Registering..." : "Submit"}
+            </Button>
           </div>
 
-          {error && (
-            <div className="c-red">{error}</div>
+          {isLoginError && (
+            <div className="c-red">{error || "Registration failed. Please try again."}</div>
           )}
         </form>
       </div>

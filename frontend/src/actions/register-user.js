@@ -1,19 +1,18 @@
 import { request } from "../utils/request";
-import { loginAction } from "./login-action";
 import { loginFailureAction } from "./login-failure-action";
 import { setAuthLoadingStateAction } from "./set-auth-loading-state-action";
 
-export const loginUser = (credentials) => async(dispatch) => {
+export const registerUser = (credentials) => async(dispatch) => {
   dispatch(loginFailureAction(null)); // reset error
   dispatch(setAuthLoadingStateAction(true));
 
   try {
-    const {error, user} = await request('/api/login', 'POST', credentials);
+    const {error, user} = await request('/api/register', 'POST', credentials);
 
     if (!error && user) {
-      dispatch(loginAction(user));
+      dispatch(setAuthLoadingStateAction(false));
     } else {
-      dispatch(loginFailureAction(error || 'Login failed'));
+      dispatch(loginFailureAction(error || 'Registration failed'));
     }
 
     return {error, user};

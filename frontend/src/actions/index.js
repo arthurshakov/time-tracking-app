@@ -3,6 +3,7 @@ export * from './fetch-projects';
 export * from './login-action';
 export * from './login-failure-action';
 export * from './login-user';
+export * from './register-user';
 export * from './logout-action';
 export * from './set-all-projects-action';
 export * from './set-auth-loading-state-action';
