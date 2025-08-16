@@ -14,7 +14,7 @@ async function addProject(project) {
 
 // edit
 async function editProject(id, project) {
-  const newProject = await Project.findByIdAndUpdate(id, project, {returnDocument: 'after'})
+  const newProject = await Project.findByIdAndUpdate(id, project, {returnDocument: 'after'}).populate('timeEntries');
 
   return newProject;
 }
@@ -36,7 +36,8 @@ async function getProjects(search = '', limit = null, page = 1, createdAt = 'des
     Project.find(query)
       .sort({ createdAt })
       .skip(limit ? (page - 1) * limit : 0)
-      .limit(limit || 0),
+      .limit(limit || 0)
+      .populate('timeEntries'),
 
     Project.countDocuments(query)
   ]);

@@ -1,4 +1,6 @@
 export * from './check-auth';
+export * from './delete-project';
+export * from './fetch-project';
 export * from './fetch-projects';
 export * from './login-action';
 export * from './login-failure-action';
@@ -6,6 +8,9 @@ export * from './login-user';
 export * from './register-user';
 export * from './logout-action';
 export * from './set-all-projects-action';
+export * from './reset-current-project-action';
 export * from './set-auth-loading-state-action';
+export * from './set-current-project-action';
 export * from './set-projects-loading-state-action';
 export * from './types';
+export * from './update-project';

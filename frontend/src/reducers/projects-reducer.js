@@ -10,11 +10,28 @@ const initialState = {
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ACTION_TYPES.SET_ALL_PROJECTS:
-
-      console.log('all projects', action.payload);
       return {
         ...state,
         allProjects: action.payload,
+        isLoading: false,
+        error: null,
+      }
+
+    case ACTION_TYPES.SET_CURRENT_PROJECT:
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          ...action.payload,
+        },
+        isLoading: false,
+        error: null,
+      }
+
+    case ACTION_TYPES.RESET_CURRENT_PROJECT:
+      return {
+        ...state,
+        currentProject: action.payload,
         isLoading: false,
         error: null,
       }

@@ -10,7 +10,6 @@ import { fetchProjects } from '../../actions';
 
 export const Timer = ({projectId = null, onSaveCallback = null}) => {
   const [projectsOptions, setProjectsOptions] = useState([]);
-  // const [error, setError] = useState(false);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
