@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { request } from "../../../../utils/request";
+import { request } from "../../../utils/request";
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "../../../../ui";
-import styles from '../../project-page.module.scss';
+import { IconButton } from "../../../ui";
+import styles from '../project-page.module.scss';
 
 export const NewProject = () => {
   const [editedTitle, setEditedTitle] = useState('New Project');

@@ -3,13 +3,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, projectsSelector } from '../../selectors';
-import { AuthWrapper, ListItem, Timer, PageContainer } from '../../components';
-import { IconButton } from '../../ui';
-import { getTimeFromSeconds } from '../../utils';
+import { AuthWrapper, PageContainer } from '../../components';
 import { Page404 } from '../Page404/Page404';
-import { deleteProject, fetchProject, updateProject } from '../../actions';
-import { NewProject } from './components/NewProject';
+import { fetchProject, updateProject } from '../../actions';
+import { NewProject, ProjectTimerSection, ProjectTaskList, ProjectHeader } from './components';
 import styles from './project-page.module.scss';
+import { request } from '../../utils/request';
 
 export const ProjectPage = () => {
   const {id} = useParams();
@@ -54,12 +53,16 @@ export const ProjectPage = () => {
     const confirmed = confirm(`Are you sure you want to delete "${currentProject.name}"`);
 
     if (confirmed) {
-      const responseFromRemovingProject = await dispatch(deleteProject(id));
+      try {
+        const responseFromRemovingProject = await request(`/api/projects/${id}`, 'DELETE');
 
-      if (responseFromRemovingProject.error) {
-        setEditingError(responseFromRemovingProject.error);
-      } else {
-        navigate('/projects');
+        if (responseFromRemovingProject.error) {
+          setEditingError(responseFromRemovingProject.error);
+        } else {
+          navigate('/projects');
+        }
+      } catch(error) {
+        setEditingError(error || 'Failed to&nbsp;update project');
       }
     }
   };
@@ -96,65 +99,21 @@ export const ProjectPage = () => {
 
   return (
     <PageContainer className={styles['project-page']}>
-      <div className="page__top">
-        {
-          titleIsBeingEdited
-          ?
-            <div className={styles['title-wrapper']}>
-              <input
-                type="text"
-                className={`h1 ${styles['title-input']}`}
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-              />
-              <div className="list__item-buttons">
-                <IconButton id="check" size="md" title="Save" onClick={onTitleSave} />
-                <IconButton id="times" size="md" title="Cancel" onClick={onTitleCancel} />
-              </div>
-            </div>
-          :
-            <div className={styles['title-wrapper']}>
-              <h1 className="h1">{currentProject.name}</h1>
-              <div className="list__item-buttons">
-                <IconButton id="edit" size="md" title="Edit" onClick={() => setTitleIsBeingEdited(true)} />
-                <IconButton id="trash-o" size="md" title="Delete" onClick={() => onProjectDelete(id)} />
-              </div>
-            </div>
-        }
-        {
-          editingError && <div className="list__item-error">{editingError}</div>
-        }
+      <ProjectHeader
+        title={currentProject.name}
+        editedTitle={editedTitle}
+        isEditing={titleIsBeingEdited}
+        onEdit={titleIsBeingEdited ? setEditedTitle : () => setTitleIsBeingEdited(true)}
+        onSave={onTitleSave}
+        onCancel={onTitleCancel}
+        onDelete={onProjectDelete}
+        duration={currentProject.duration}
+        editingError={editingError}
+      />
 
-        <div className="h3">Total duration: {getTimeFromSeconds(currentProject.duration)}</div>
-      </div>
+      <ProjectTimerSection projectId={id} onTaskSave={() => dispatch(fetchProject(currentProject.id))} />
 
-      <div className={styles['timer-wrapper']}>
-        <h2 className="h2">Start tracking time</h2>
-        <Timer projectId={id} onSaveCallback={() => dispatch(fetchProject(currentProject.id))} />
-      </div>
-
-      <div className={styles['task__list-top']}>
-        <h2 className="h2">Done tasks</h2>
-      </div>
-
-      <div className="list">
-        {
-          currentProject.timeEntries.length
-          ? currentProject.timeEntries.map(({id, name, duration, createdAt}) => (
-            <ListItem
-              id={id}
-              name={name}
-              duration={duration}
-              createdAt={createdAt}
-              key={id}
-              endpoint={`/api/projects/${currentProject.id}/time-entries/${id}`}
-              onRemoveFromList={() => dispatch(fetchProject(currentProject.id))}
-            />
-          ))
-
-          : <div>At this moment there are no tasks to show in this project</div>
-        }
-      </div>
+      <ProjectTaskList projectId={id} timeEntries={currentProject.timeEntries} onTaskDelete={() => dispatch(fetchProject(currentProject.id))} />
     </PageContainer>
   )
 }

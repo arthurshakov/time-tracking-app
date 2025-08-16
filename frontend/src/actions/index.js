@@ -1,5 +1,4 @@
 export * from './check-auth';
-export * from './delete-project';
 export * from './fetch-project';
 export * from './fetch-projects';
 export * from './login-action';
