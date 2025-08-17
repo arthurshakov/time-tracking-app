@@ -98,7 +98,7 @@ export const ProjectPage = () => {
   }
 
   return (
-    <PageContainer className={styles['project-page']}>
+    currentProject && <PageContainer className={styles['project-page']}>
       <ProjectHeader
         title={currentProject.name}
         editedTitle={editedTitle}
