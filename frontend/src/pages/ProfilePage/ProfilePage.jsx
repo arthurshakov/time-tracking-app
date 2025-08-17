@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from '../../ui';
 import styles from './profile-page.module.scss';
-import { updatePassword } from '../../actions';
+import { passwordResetFailureAction, updatePassword } from '../../actions';
 
 const signupFormSchema = getFormSchema(['password', 'repeat-password']);
 
@@ -37,7 +37,8 @@ export const ProfilePage = () => {
   // Reset messages when inputs change
   useEffect(() => {
     setSuccess(null);
-  }, [password, repeatPassword]);
+    dispatch(passwordResetFailureAction(false));
+  }, [password, repeatPassword, dispatch]);
 
   const onSubmit = async (formFields) => {
     const updateResponse = await dispatch(updatePassword(user.id, formFields));
